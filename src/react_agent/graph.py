@@ -20,7 +20,7 @@ from react_agent.utils import load_chat_model
 
 import vertexai
 
-# Define the function that calls the model
+
 
 import os
 
@@ -29,6 +29,8 @@ LOCATION = os.getenv("LOCATION")
 STAGING_BUCKET = os.getenv("STAGING_BUCKET")
 
 vertexai.init(project=PROJECT_ID, location=LOCATION, staging_bucket=STAGING_BUCKET)
+
+# Define the function that calls the model
 
 @traceable(run_type="llm")
 async def call_model(
