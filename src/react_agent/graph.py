@@ -11,6 +11,8 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.graph import StateGraph
 from langgraph.prebuilt import ToolNode
 
+from langsmith import traceable
+
 from react_agent.configuration import Configuration
 from react_agent.state import InputState, State
 from react_agent.tools import TOOLS
@@ -18,7 +20,7 @@ from react_agent.utils import load_chat_model
 
 # Define the function that calls the model
 
-
+@traceable(run_type="llm")
 async def call_model(
     state: State, config: RunnableConfig
 ) -> Dict[str, List[AIMessage]]:
@@ -34,14 +36,17 @@ async def call_model(
         dict: A dictionary containing the model's response message.
     """
     configuration = Configuration.from_runnable_config(config)
-
+    print("Configuration:", configuration)
     # Initialize the model with tool binding. Change the model or add more tools here.
     model = load_chat_model(configuration.model).bind_tools(TOOLS)
-
+    print("Model:", model)
     # Format the system prompt. Customize this to change the agent's behavior.
     system_message = configuration.system_prompt.format(
         system_time=datetime.now(tz=timezone.utc).isoformat()
     )
+
+    print("System Message:", system_message)
+    print("State Messages:", state.messages)
 
     # Get the model's response
     response = cast(
