@@ -19,6 +19,7 @@ dependencies = [
     "tavily-python>=0.4.0",
     "langchain_google_vertexai",
     "langsmith",
+    "vertexai"
 ]
 
 

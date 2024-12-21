@@ -18,7 +18,17 @@ from react_agent.state import InputState, State
 from react_agent.tools import TOOLS
 from react_agent.utils import load_chat_model
 
+import vertexai
+
 # Define the function that calls the model
+
+import os
+
+PROJECT_ID = os.getenv("PROJECT_ID")
+LOCATION = os.getenv("LOCATION")
+STAGING_BUCKET = os.getenv("STAGING_BUCKET")
+
+vertexai.init(project=PROJECT_ID, location=LOCATION, staging_bucket=STAGING_BUCKET)
 
 @traceable(run_type="llm")
 async def call_model(
